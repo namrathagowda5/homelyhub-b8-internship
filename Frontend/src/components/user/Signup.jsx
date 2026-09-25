@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../../css/Login.css";
 import{ useDispatch,useSelector } from "react-redux";
 import { getsignupDetails } from "../../store/User/user-action.js";
-import { userActions } from "../../store/user/user-slice";
+import { userActions } from "../../store/User/user-slice.js";
 
 
 
@@ -40,7 +40,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (error && error.length>0)  {
-      toast.error(errors);
+      toast.error(error);
       dispatch(userActions.clearError());
 
     }else if (isAuthenticated) {
