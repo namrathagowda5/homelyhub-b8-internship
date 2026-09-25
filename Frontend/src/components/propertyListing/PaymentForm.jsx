@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { DatePicker, Space } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { useDispatch } from "react-redux";
 import { setPaymentDetails } from "../../store/Payment/payment-slice";
 
 const PaymentForm = ({
@@ -22,6 +23,7 @@ const PaymentForm = ({
 
   const isDateDisabled = (current) => {
     const today = moment().startOf("day");
+
     if (current.isBefore(today)) {
       return true;
     }
@@ -37,6 +39,7 @@ const PaymentForm = ({
       );
     });
   };
+
   const form = useForm({
     defaultValues: {
       dateRange: [],
@@ -44,11 +47,23 @@ const PaymentForm = ({
       name: "",
       phoneNumber: "",
     },
+
     onSubmit: async ({ value }) => {
       const [checkinDate, checkoutDate] = value.dateRange;
-      const nights = moment(checkoutDate).diff(moment(checkinDate), "days");
+      const nights = moment(checkoutDate).diff(
+        moment(checkinDate),
+        "days"
+      );
+
       const { name, guests, phoneNumber } = value;
-      if (name && guests && phoneNumber && checkinDate && checkoutDate) {
+
+      if (
+        name &&
+        guests &&
+        phoneNumber &&
+        checkinDate &&
+        checkoutDate
+      ) {
         await dispatch(
           setPaymentDetails({
             checkinDate: checkinDate,
@@ -62,6 +77,7 @@ const PaymentForm = ({
             phoneNumber,
           })
         );
+
         navigate(`/payment/${propertyId}`);
       } else {
         alert("Please fill all fields correctly before proceeding.");
@@ -82,6 +98,7 @@ const PaymentForm = ({
           Price: <b>&#8377;{price}</b>
           <span> / Per night</span>
         </div>
+
         <div className="payment-field">
           <form.Field name="dateRange">
             {(field) => (
@@ -93,12 +110,18 @@ const PaymentForm = ({
                     disabledDate={isDateDisabled}
                     onChange={(value, dateString) => {
                       field.handleChange(dateString);
+
                       const [checkin, checkout] = dateString;
+
                       if (checkin && checkout) {
-                        const nights = moment(checkout, "YYYY-MM-DD").diff(
+                        const nights = moment(
+                          checkout,
+                          "YYYY-MM-DD"
+                        ).diff(
                           moment(checkin, "YYYY-MM-DD"),
                           "days"
                         );
+
                         const total = price * nights;
                         setCalulatedPrice(total);
                       } else {
@@ -110,6 +133,7 @@ const PaymentForm = ({
               </div>
             )}
           </form.Field>
+
           <form.Field
             name="guests"
             validators={{
@@ -121,63 +145,89 @@ const PaymentForm = ({
           >
             {(field) => (
               <div className="guest">
-                <label className="payment-labels">Number of guests:</label>
-                <br></br>
+                <label className="payment-labels">
+                  Number of guests:
+                </label>
+                <br />
+
                 <input
                   type="number"
                   className="no-of-guest"
                   placeholder="Guest"
                   value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                ></input>
+                  onChange={(e) =>
+                    field.handleChange(e.target.value)
+                  }
+                />
+
                 {field.state.meta.errors && (
-                  <p style={{ color: "red" }}>{field.state.meta.errors}</p>
+                  <p style={{ color: "red" }}>
+                    {field.state.meta.errors}
+                  </p>
                 )}
               </div>
             )}
           </form.Field>
+
           <div className="name-phoneno">
             <form.Field name="name">
               {(field) => (
                 <>
-                  <label className="payment-labels">Your full name:</label>{" "}
-                  <br></br>
+                  <label className="payment-labels">
+                    Your full name:
+                  </label>
+                  <br />
+
                   <input
                     type="text"
                     className="full-name"
                     placeholder="Name"
                     value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  ></input>
+                    onChange={(e) =>
+                      field.handleChange(e.target.value)
+                    }
+                  />
                 </>
               )}
             </form.Field>
-            <br></br>
+
+            <br />
+
             <form.Field name="phoneNumber">
               {(field) => (
                 <>
-                  <label className="payment-labels">Phone Number:</label>{" "}
-                  <br></br>
+                  <label className="payment-labels">
+                    Phone Number:
+                  </label>
+                  <br />
+
                   <input
                     type="number"
                     className="phone-number"
                     placeholder="Number"
                     value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  ></input>
+                    onChange={(e) =>
+                      field.handleChange(e.target.value)
+                    }
+                  />
                 </>
               )}
             </form.Field>
           </div>
         </div>
+
         <div className="book-place">
           {!isAuthenticated ? (
-
-            <button type="button" onClick={() => navigate("/login")}>
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+            >
               Login to Book
             </button>
           ) : (
-            <button>Book this place &#8377; {calculatedPrice}</button>
+            <button>
+              Book this place &#8377; {calculatedPrice}
+            </button>
           )}
         </div>
       </form>
