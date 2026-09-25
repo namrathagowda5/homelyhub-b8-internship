@@ -28,8 +28,8 @@ import AiTripPlanner from "./components/aiTripPlanner/AiTripPlanner";
 
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from "react";
-import { userActions } from "./store/user/user-slice";
-import {currentUser} from "./store/User/user-action.js";
+import { userActions } from "./store/User/user-slice.js";
+import { currentUser } from "./store/User/user-action.js";
 
 function App() {
  const dispatch = useDispatch();
