@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "CORS";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import {router} from "./routes/userRoutes.js"
 import {propertyRouter} from "./routes/propertyRouter.js";
@@ -24,8 +24,8 @@ app.use(express.urlencoded({limit: "100mb",extended:true}))
 app.use(cookieParser())
 
 app.use(cors({
-    origin:process.env.ORIGIN_ACCESS_URL,
-    Credentials:true
+    origin: process.env.ORIGIN_ACCESS_URL,
+    credentials: true
 }))
 
 
